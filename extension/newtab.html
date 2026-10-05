@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>New Tab · Lumen</title>
+    <link rel="icon" href="assets/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/customization.css" />
+    <script type="module" src="scripts/newtab.js"></script>
+  </head>
+  <body>
+    <div id="wallpaper" aria-hidden="true">
+      <canvas id="landscape"></canvas>
+      <video id="video" muted loop playsinline hidden></video>
+      <img id="photo" alt="" hidden />
+    </div>
+    <div class="shade" aria-hidden="true"></div>
+    <header>
+      <a class="wordmark" href="newtab.html" aria-label="Lumen home"
+        ><img src="assets/mark.svg" alt="" />lumen</a
+      >
+    </header>
+    <main>
+      <section id="clock-block" aria-label="Clock">
+        <p id="date" class="eyebrow"></p>
+        <div id="clock-line" class="clock-line">
+          <time id="clock"></time><span id="period"></span>
+        </div>
+        <p id="greeting"></p>
+      </section>
+      <form id="search" role="search" action="https://www.google.com/search" method="get">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <circle cx="10.5" cy="10.5" r="6.5" />
+          <path d="m16 16 4.5 4.5" />
+        </svg>
+        <input
+          name="q"
+          type="search"
+          aria-label="Search the web"
+          placeholder="Search the web"
+          autocomplete="off"
+          required
+        />
+        <button aria-label="Submit search" title="Search">↗</button>
+      </form>
+      <nav id="shortcuts" aria-label="Quick links">
+        <a href="https://www.youtube.com"><span>▶</span>YouTube</a>
+        <a href="https://mail.google.com"><span>✉</span>Gmail</a>
+        <a href="https://github.com"><span>⌘</span>GitHub</a>
+      </nav>
+    </main>
+    <footer>
+      <button id="wallpaper-button" class="scene-label" title="Choose wallpaper">
+        <span class="status-dot"></span
+        ><span
+          ><strong id="scene-name">Northern lights</strong
+          ><small id="scene-detail">ANIMATED BACKGROUND</small></span
+        >
+      </button>
+      <div class="footer-actions">
+        <button
+          id="focus"
+          class="round-button"
+          aria-label="Show only wallpaper"
+          aria-pressed="false"
+          title="Show only wallpaper"
+        >
+          ⛶</button
+        ><button
+          id="pause"
+          class="round-button"
+          aria-label="Pause wallpaper"
+          title="Pause wallpaper"
+        >
+          Ⅱ</button
+        ><button id="customize" class="customize">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"
+          >
+            <path d="M4 7h16M4 17h16" />
+            <circle cx="9" cy="7" r="2.5" />
+            <circle cx="15" cy="17" r="2.5" /></svg
+          >Customize
+        </button>
+      </div>
+    </footer>
+    <dialog id="settings" aria-labelledby="settings-title">
+      <div class="panel-heading">
+        <h1 id="settings-title">Settings</h1>
+        <button id="close-settings" class="round-button" aria-label="Close settings">×</button>
+      </div>
+      <nav class="panel-nav" aria-label="Customization categories">
+        <button data-panel="wallpapers" aria-current="page">Wallpaper</button
+        ><button data-panel="appearance">Appearance</button
+        ><button data-panel="widgets">Widgets</button><button data-panel="links">Shortcuts</button>
+      </nav>
+      <div id="panel-wallpapers" class="settings-panel">
+        <section>
+          <h2>Choose a landscape</h2>
+          <div class="presets">
+            <button class="preset aurora" data-scene="aurora" aria-pressed="true">
+              <span>Northern lights</span><small>01 / AURORA</small>
+            </button>
+            <button class="preset dusk" data-scene="dusk" aria-pressed="false">
+              <span>Golden hour</span><small>02 / DUSK</small>
+            </button>
+            <button class="preset ocean" data-scene="ocean" aria-pressed="false">
+              <span>Blue current</span><small>03 / OCEAN</small>
+            </button>
+          </div>
+        </section>
+        <section>
+          <div class="section-title">
+            <h2>Your own wallpaper</h2>
+            <span>STAYS ON THIS DEVICE</span>
+          </div>
+          <label class="upload" for="upload"
+            ><span class="upload-icon">↑</span
+            ><strong id="upload-label">Choose a video or image</strong
+            ><span>MP4, WebM, JPG, PNG, WebP · up to 150 MB</span></label
+          >
+          <input
+            id="upload"
+            class="visually-hidden"
+            type="file"
+            accept="video/mp4,video/webm,image/jpeg,image/png,image/webp"
+          />
+          <div class="saved-media" id="saved-media" hidden>
+            <button id="use-saved">Use saved wallpaper</button
+            ><button id="remove-saved" title="Delete the saved file">Remove</button>
+          </div>
+          <p id="upload-status" class="hint" role="status">
+            Videos loop silently. A small file opens faster.
+          </p>
+        </section>
+        <section>
+          <h2>Wallpaper adjustments</h2>
+          <label class="range-label" for="brightness"
+            >Brightness<output id="brightness-value">75%</output></label
+          ><input type="range" id="brightness" min="20" max="100" value="75" />
+          <label class="range-label" for="blur"
+            >Background blur<output id="blur-value">0 px</output></label
+          ><input type="range" id="blur" min="0" max="16" value="0" />
+          <label class="range-label" for="saturation"
+            >Color intensity<output id="saturation-value">100%</output></label
+          ><input type="range" id="saturation" min="0" max="180" value="100" />
+          <label class="range-label" for="overlay"
+            >Dark overlay<output id="overlay-value">0%</output></label
+          ><input type="range" id="overlay" min="0" max="80" value="0" />
+          <label class="toggle-row"
+            >Play animation<input type="checkbox" id="motion" checked
+          /></label>
+          <label class="select-row" for="speed"
+            >Animation speed<select id="speed">
+              <option value="0.5">0.5× — slow</option>
+              <option value="0.75">0.75×</option>
+              <option value="1">1× — normal</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.5">1.5×</option>
+              <option value="2">2× — fast</option>
+            </select></label
+          >
+        </section>
+        <section>
+          <h2>Uploaded wallpaper framing</h2>
+          <p class="hint">Position matters when Fill crops your video or image.</p>
+          <label class="select-row" for="fit"
+            >Display mode<select id="fit">
+              <option value="cover">Fill screen</option>
+              <option value="contain">Fit entire image / video</option>
+            </select></label
+          >
+          <label class="range-label" for="positionX"
+            >Horizontal position<output id="positionX-value">50%</output></label
+          ><input type="range" id="positionX" min="0" max="100" value="50" />
+          <label class="range-label" for="positionY"
+            >Vertical position<output id="positionY-value">50%</output></label
+          ><input type="range" id="positionY" min="0" max="100" value="50" />
+        </section>
+      </div>
+      <div id="panel-appearance" class="settings-panel" hidden>
+        <section>
+          <h2>Presets</h2>
+          <div class="looks">
+            <button data-look="calm">Default<small>Centered</small></button
+            ><button data-look="editorial">Serif<small>Left aligned</small></button
+            ><button data-look="terminal">Mono<small>Tile shortcuts</small></button>
+          </div>
+          <p class="hint">Applies font, color and layout settings.</p>
+        </section>
+        <section>
+          <h2>Colors &amp; typography</h2>
+          <label class="select-row" for="accent"
+            >Accent color<input id="accent" type="color" value="#c8ddac"
+          /></label>
+          <label class="select-row" for="textColor"
+            >Widget text color<input id="textColor" type="color" value="#f0f3ef"
+          /></label>
+          <label class="select-row" for="font"
+            >Clock typeface<select id="font">
+              <option value="modern">Modern · Segoe UI</option>
+              <option value="serif">Classic · Georgia</option>
+              <option value="mono">Digital · Consolas</option>
+              <option value="rounded">Rounded · Trebuchet</option>
+            </select></label
+          >
+          <label class="range-label" for="clockSize"
+            >Clock size<output id="clockSize-value">142 px</output></label
+          ><input type="range" id="clockSize" min="64" max="180" value="142" />
+          <p class="hint">The clock scales down when needed to fit your window.</p>
+        </section>
+        <section>
+          <h2>Layout</h2>
+          <label class="select-row" for="layout"
+            >Horizontal alignment<select id="layout">
+              <option value="center">Center</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select></label
+          >
+          <label class="select-row" for="vertical"
+            >Vertical alignment<select id="vertical">
+              <option value="top">Top</option>
+              <option value="center">Middle</option>
+              <option value="bottom">Bottom</option>
+            </select></label
+          >
+          <label class="select-row" for="searchStyle"
+            >Search bar shape<select id="searchStyle">
+              <option value="soft">Soft corners</option>
+              <option value="pill">Pill</option>
+              <option value="square">Square</option>
+            </select></label
+          >
+          <label class="range-label" for="glass"
+            >Search &amp; tile opacity<output id="glass-value">6%</output></label
+          ><input type="range" id="glass" min="0" max="70" value="6" />
+        </section>
+      </div>
+      <div id="panel-widgets" class="settings-panel" hidden>
+        <section>
+          <h2>Greeting</h2>
+          <label class="field" for="name"
+            >Your name<input
+              id="name"
+              type="text"
+              maxlength="40"
+              placeholder="Name (optional)"
+              autocomplete="off"
+          /></label>
+          <label class="field" for="greeting-input"
+            >Custom greeting<textarea
+              id="greeting-input"
+              maxlength="160"
+              rows="2"
+              placeholder="Leave empty for a greeting based on the time of day"
+            ></textarea>
+          </label>
+          <p class="hint">Use {name} in your message to include your name.</p>
+        </section>
+        <section>
+          <h2>Clock &amp; date</h2>
+          <label class="toggle-row">24-hour clock<input type="checkbox" id="hour24" /></label>
+          <label class="toggle-row">Show seconds<input type="checkbox" id="seconds" /></label>
+          <label class="select-row" for="timezone"
+            >Time zone<select id="timezone">
+              <option value="local">Device time zone</option>
+              <option value="UTC">UTC</option>
+              <option value="Asia/Kolkata">India</option>
+              <option value="America/New_York">New York</option>
+              <option value="Europe/London">London</option>
+              <option value="Asia/Tokyo">Tokyo</option>
+            </select></label
+          >
+        </section>
+        <section>
+          <h2>Visible widgets</h2>
+          <label class="toggle-row">Clock<input type="checkbox" id="showClock" checked /></label>
+          <label class="toggle-row">Date<input type="checkbox" id="showDate" checked /></label>
+          <label class="toggle-row"
+            >Greeting<input type="checkbox" id="showGreeting" checked
+          /></label>
+          <label class="toggle-row"
+            >Search bar<input type="checkbox" id="showSearch" checked
+          /></label>
+          <label class="toggle-row"
+            >Shortcut links<input type="checkbox" id="showLinks" checked
+          /></label>
+          <label class="toggle-row"
+            >Lumen header<input type="checkbox" id="showBrand" checked
+          /></label>
+          <label class="select-row" for="engine"
+            >Search with<select id="engine">
+              <option value="google">Google</option>
+              <option value="bing">Bing</option>
+              <option value="duckduckgo">DuckDuckGo</option>
+            </select></label
+          >
+        </section>
+      </div>
+      <div id="panel-links" class="settings-panel" hidden>
+        <section>
+          <h2>Shortcuts</h2>
+          <p class="hint">Add up to 12 links. Edit, reorder, or remove them below.</p>
+          <div id="link-list"></div>
+          <form id="link-form">
+            <h2 id="link-form-title">Add a shortcut</h2>
+            <label class="field" for="link-label"
+              >Name<input
+                id="link-label"
+                maxlength="30"
+                required
+                placeholder="e.g. Spotify" /></label
+            ><label class="field" for="link-url"
+              >Website<input
+                id="link-url"
+                maxlength="2048"
+                required
+                placeholder="https://open.spotify.com" /></label
+            ><label class="field" for="link-icon"
+              >Icon or emoji (optional)<input id="link-icon" maxlength="4" placeholder="♫"
+            /></label>
+            <div class="form-actions">
+              <button class="primary-button" type="submit" id="save-link">Add shortcut</button
+              ><button type="button" id="cancel-link" hidden>Cancel edit</button>
+            </div>
+            <p id="link-error" class="hint error" role="status"></p>
+          </form>
+        </section>
+        <section>
+          <h2>Shortcut behavior</h2>
+          <label class="select-row" for="linkStyle"
+            >Display style<select id="linkStyle">
+              <option value="minimal">Minimal links</option>
+              <option value="tiles">Glass tiles</option>
+            </select></label
+          ><label class="toggle-row"
+            >Open links in a new tab<input type="checkbox" id="newTabLinks"
+          /></label>
+        </section>
+      </div>
+      <div class="reset-row">
+        <button id="reset-style">Reset appearance &amp; widgets</button
+        ><span>Keeps your wallpaper and links</span>
+      </div>
+      <p class="panel-footnote">Settings save automatically.<br />Use ⛶ to hide widgets.</p>
+    </dialog>
+    <p id="toast" role="status" hidden></p>
+  </body>
+</html>
