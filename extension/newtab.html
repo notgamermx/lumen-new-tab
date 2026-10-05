@@ -45,7 +45,7 @@
           name="q"
           type="search"
           aria-label="Search the web"
-          placeholder="Search the web"
+          placeholder="Search"
           autocomplete="off"
           required
         />
@@ -58,13 +58,6 @@
       </nav>
     </main>
     <footer>
-      <button id="wallpaper-button" class="scene-label" title="Choose wallpaper">
-        <span class="status-dot"></span
-        ><span
-          ><strong id="scene-name">Northern lights</strong
-          ><small id="scene-detail">ANIMATED BACKGROUND</small></span
-        >
-      </button>
       <div class="footer-actions">
         <button
           id="focus"
@@ -107,6 +100,9 @@
         ><button data-panel="widgets">Widgets</button><button data-panel="links">Shortcuts</button>
       </nav>
       <div id="panel-wallpapers" class="settings-panel">
+        <p class="hint current-wallpaper">
+          Current wallpaper: <span id="scene-name">Northern lights</span>
+        </p>
         <section>
           <h2>Choose a landscape</h2>
           <div class="presets">

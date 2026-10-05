@@ -157,8 +157,12 @@ main > * {
 .wallpaper-only .scene-label {
   display: none !important;
 }
-.wallpaper-only footer {
+footer {
   justify-content: flex-end;
+}
+.current-wallpaper {
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
 }
 .status-dot {
   background: var(--accent);

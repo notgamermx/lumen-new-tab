@@ -147,11 +147,6 @@ function apply() {
   $('scene-name').textContent = custom
     ? savedMedia.name
     : sceneNames[settings.scene] || sceneNames.aurora;
-  $('scene-detail').textContent = custom
-    ? savedMedia.kind === 'video'
-      ? 'LOCAL VIDEO'
-      : 'LOCAL IMAGE'
-    : 'ANIMATED BACKGROUND';
   $('saved-media').hidden = !savedMedia;
   $('use-saved').textContent = savedMedia
     ? `Use ${savedMedia.kind === 'video' ? 'saved video' : 'saved image'}`
@@ -491,8 +486,7 @@ $('pause').addEventListener('click', () => {
   save();
   apply();
 });
-for (const id of ['customize', 'wallpaper-button'])
-  $(id).addEventListener('click', () => $('settings').showModal());
+$('customize').addEventListener('click', () => $('settings').showModal());
 $('close-settings').addEventListener('click', () => $('settings').close());
 $('settings').addEventListener('click', (event) => {
   const rect = $('settings').getBoundingClientRect();
