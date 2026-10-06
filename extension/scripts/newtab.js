@@ -1,6 +1,7 @@
 import { Landscape } from './scene.js';
 import { mediaStore } from './storage.js';
 import { defaults, normalize, safeUrl, engines, ranges, choices, flags } from './preferences.js';
+import './memory-client.js';
 
 const $ = (id) => document.getElementById(id);
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -526,7 +527,9 @@ $('video').addEventListener('error', () => {
     toast('This video could not play. Choose another wallpaper in Customize.');
 });
 apply();
-setInterval(clock, 1000);
+setInterval(() => {
+  if (!document.hidden) clock();
+}, 1000);
 const initialRevision = mediaRevision;
 try {
   const record = await mediaStore('get');

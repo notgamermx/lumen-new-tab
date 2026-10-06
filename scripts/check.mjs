@@ -9,6 +9,7 @@ if (manifest.manifest_version !== 3 || manifest.version !== pkg.version) {
   throw new Error('Check the manifest format and package version.');
 }
 await access(path.join(extension, manifest.chrome_url_overrides.newtab));
+await access(path.join(extension, manifest.background.service_worker));
 const html = await readFile(path.join(extension, 'newtab.html'), 'utf8');
 for (const match of html.matchAll(/(?:src|href)="([^"#]+)"/g)) {
   if (!/^https?:/.test(match[1])) await access(path.join(extension, match[1]));

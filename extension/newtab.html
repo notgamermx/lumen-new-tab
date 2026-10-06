@@ -97,7 +97,8 @@
       <nav class="panel-nav" aria-label="Customization categories">
         <button data-panel="wallpapers" aria-current="page">Wallpaper</button
         ><button data-panel="appearance">Appearance</button
-        ><button data-panel="widgets">Widgets</button><button data-panel="links">Shortcuts</button>
+        ><button data-panel="widgets">Widgets</button><button data-panel="links">Shortcuts</button
+        ><button data-panel="memory">Memory</button>
       </nav>
       <div id="panel-wallpapers" class="settings-panel">
         <p class="hint current-wallpaper">
@@ -345,6 +346,82 @@
           ><label class="toggle-row"
             >Open links in a new tab<input type="checkbox" id="newTabLinks"
           /></label>
+        </section>
+      </div>
+      <div id="panel-memory" class="settings-panel" hidden>
+        <section>
+          <h2>Memory saver</h2>
+          <p class="hint">
+            Unload inactive website tabs to reduce their memory use. Tabs stay in the tab bar and
+            reload when reopened.
+          </p>
+          <div class="memory-summary">
+            <strong id="memory-counts">Tab access is off.</strong
+            ><span id="memory-state">Automatic sleeping is off.</span>
+          </div>
+          <div class="form-actions">
+            <button id="memory-connect" class="primary-button">Enable tab access</button
+            ><button id="memory-disconnect" hidden>Remove tab access</button
+            ><button id="memory-refresh" title="Refresh tab counts">Refresh</button>
+          </div>
+          <p class="hint">
+            Tab access is optional. It lets Lumen check website addresses against your protected
+            list. It does not read page contents.
+          </p>
+        </section>
+        <section>
+          <h2>Sleep rules</h2>
+          <label class="toggle-row"
+            >Automatically sleep inactive tabs<input id="memory-enabled" type="checkbox" disabled
+          /></label>
+          <label class="select-row" for="memory-timeout"
+            >Inactive for<select id="memory-timeout" disabled>
+              <option value="5">5 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="30" selected>30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="120">2 hours</option>
+            </select></label
+          >
+          <label class="select-row" for="memory-recent"
+            >Keep recent background tabs<select id="memory-recent" disabled>
+              <option value="0">None</option>
+              <option value="2">2 tabs</option>
+              <option value="3" selected>3 tabs</option>
+              <option value="5">5 tabs</option>
+              <option value="10">10 tabs</option>
+            </select></label
+          >
+          <p class="hint">
+            Active, selected, pinned, audio-playing, loading, incognito and already sleeping tabs
+            are skipped. Browser pages and extension pages are skipped too.
+          </p>
+        </section>
+        <section>
+          <h2>Protected websites</h2>
+          <label class="field" for="memory-exclusions"
+            >One domain per line<textarea
+              id="memory-exclusions"
+              rows="5"
+              maxlength="8000"
+              disabled
+              placeholder="docs.google.com&#10;meet.google.com"
+            ></textarea></label
+          ><button id="memory-save-exclusions" class="primary-button" disabled>
+            Save protected websites
+          </button>
+          <p class="hint">
+            A domain also protects its subdomains. Pin individual tabs to keep them awake.
+          </p>
+        </section>
+        <section>
+          <h2>Sleep eligible tabs now</h2>
+          <p class="hint">
+            Uses the same timer and protections. Sleeps up to 10 tabs per run. Save unfinished work
+            first; Lumen cannot detect unsaved forms, silent video or every call and screen share.
+          </p>
+          <button id="memory-sleep" class="primary-button" disabled>Sleep eligible tabs</button>
+          <p id="memory-result" class="hint" role="status"></p>
         </section>
       </div>
       <div class="reset-row">

@@ -1,9 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Lumen New Tab",
-  "version": "1.1.1",
+  "version": "1.2.0",
+  "minimum_chrome_version": "121",
   "description": "Local video wallpapers, an adjustable clock, and custom shortcuts for your new tab.",
   "chrome_url_overrides": { "newtab": "newtab.html" },
+  "background": { "service_worker": "scripts/memory-background.js", "type": "module" },
+  "permissions": ["alarms", "storage"],
+  "optional_permissions": ["tabs"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'none'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'none';"
   }

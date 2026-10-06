@@ -21,12 +21,25 @@ No build step is needed to install the extension. Keep its folder in place after
 - Custom greetings and up to 12 editable shortcuts.
 - Separate visibility controls for the clock, date, search, greeting and shortcuts.
 - Wallpaper-only mode and automatic playback pause in background tabs.
+- Optional memory saver to unload inactive website tabs across the browser.
 
 ![Customization panel with presets, colors, clock fonts and layout controls](docs/images/customization.png)
 
 Videos loop without audio. Files can be up to 150 MB, subject to available browser storage. Short videos load faster.
 
 Wallpaper files and settings stay in the browser profile. Lumen has no analytics, accounts or remote wallpaper requests. Search and shortcut links open the websites you choose. See [privacy details](docs/privacy.md).
+
+## Memory saver
+
+Open **Customize → Memory → Enable tab access**. The browser asks for the optional tab permission so Lumen can check website addresses against the protected list. Then turn on **Automatically sleep inactive tabs**, or use **Sleep eligible tabs** for a manual run. Automatic sleeping is off by default.
+
+Choose a 5–120 minute inactivity timer, keep up to 10 recent background tabs awake, and exclude website domains. Active, selected, pinned, audio-playing, loading, private, already discarded, and explicitly non-discardable tabs are skipped. Browser and extension pages are also skipped. A domain exclusion includes its subdomains. Automatic checks run about once a minute and unload at most 10 tabs per run.
+
+Tabs stay in the tab bar and reload when reopened. Save unfinished work, and protect sites used for editing, meetings, or silent video: Lumen cannot inspect page contents or reliably detect unsaved forms and every screen share or call. Some editing and meeting domains are protected by default. Removing tab access disables automatic sleeping.
+
+This can reduce memory held by inactive pages; it does not control Chrome's total memory usage, free operating-system memory, or measure megabytes saved. The panel shows actual sleeping and eligible tab counts. Chrome also has a built-in Memory Saver under Settings → Performance, with additional browser-level safeguards. See [Chrome performance settings](https://support.google.com/chrome/answer/12929150) and [tab discarding](https://developer.chrome.com/docs/extensions/reference/api/tabs#method-discard).
+
+![Memory saver panel with inactivity rules, protected websites and live tab counts](docs/images/memory-saver.png)
 
 ## Updating
 
@@ -47,7 +60,7 @@ npm run package
 
 The ZIP is written to `dist/`. `npm run format` formats source files. GitHub Actions runs formatting, syntax and preference checks and builds the ZIP on pushes and pull requests.
 
-Run the browser checks with `npm run test:browser`. They use an isolated headless Edge profile on Windows. Set `BROWSER_PATH` to another compatible Chromium browser executable if needed. Browser checks are local; they are not included in CI. Generated screenshots, media fixtures and profiles go in the ignored `test-results` directory.
+Run the page checks with `npm run test:browser` and the tab-sleeping checks with `npm run test:memory-browser`. They use isolated headless Edge profiles on Windows. Set `BROWSER_PATH` to another compatible Chromium browser executable if needed. The memory test gives tab access to a temporary copy of the extension and ages fixture timestamps to test unloading without waiting for the inactivity timer. Production tab access stays optional. Browser checks are local; they are not included in CI. Generated screenshots, media fixtures and profiles go in the ignored `test-results` directory.
 
 ```text
 extension/          Load this folder in the browser
@@ -62,4 +75,4 @@ docs/               Privacy information
 
 ## Limitations
 
-The extension replaces the new-tab page only. Chrome does not allow this override in incognito windows. Another new-tab extension may take priority. Video support depends on the browser's codecs; an unsupported file is rejected before it replaces the saved wallpaper. Firefox is not tested.
+Chrome/Edge 121 or newer is required. Chrome does not allow the new-tab override in incognito windows. Another new-tab extension may take priority. Video support depends on the browser's codecs; an unsupported file is rejected before it replaces the saved wallpaper. Firefox is not tested.
