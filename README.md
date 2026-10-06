@@ -2,6 +2,8 @@
 
 A new-tab extension for Chrome and Edge. Use a local video as your wallpaper, or pick one of three animated backgrounds.
 
+![Lumen new-tab page with an animated aurora background, clock, search and shortcuts](docs/images/new-tab.png)
+
 ## Install
 
 1. Download or clone this repository.
@@ -19,6 +21,8 @@ No build step is needed to install the extension. Keep its folder in place after
 - Custom greetings and up to 12 editable shortcuts.
 - Separate visibility controls for the clock, date, search, greeting and shortcuts.
 - Wallpaper-only mode and automatic playback pause in background tabs.
+
+![Customization panel with presets, colors, clock fonts and layout controls](docs/images/customization.png)
 
 Videos loop without audio. Files can be up to 150 MB, subject to available browser storage. Short videos load faster.
 
