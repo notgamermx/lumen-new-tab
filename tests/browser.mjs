@@ -123,6 +123,7 @@ try {
   console.log('Extension loaded:', await run('location.href'));
   await until("document.getElementById('scene-name').textContent === 'Northern lights'");
   const shot = async (name) => {
+    await delay(200);
     const { data } = await send('Page.captureScreenshot', { format: 'png' });
     await writeFile(path.join(root, 'test-results', name), Buffer.from(data, 'base64'));
   };
@@ -178,6 +179,32 @@ try {
   await until("document.getElementById('upload-status').classList.contains('error')");
   assert.equal(await run("document.getElementById('scene-name').textContent"), 'test-image.png');
   console.log('PASS: invalid video rejected; previous wallpaper retained');
+  await run(`(() => {
+    const bytes = Uint8Array.from(atob('${imageData}'), c => c.charCodeAt(0));
+    const transfer = new DataTransfer();
+    transfer.items.add(new File([bytes], 'dropped-image.png', { type: 'image/png' }));
+    document.getElementById('upload-zone').dispatchEvent(new DragEvent('drop', { dataTransfer: transfer, bubbles: true, cancelable: true }));
+  })()`);
+  await until("document.getElementById('scene-name').textContent === 'dropped-image.png'");
+  assert.equal(await run("document.getElementById('scene-kind').textContent"), 'Image');
+  await shot('settings-redesign.png');
+  const headerTop = await run(
+    "document.querySelector('.settings-top').getBoundingClientRect().top",
+  );
+  await run("document.querySelector('.settings-content').scrollTop = 400");
+  assert.equal(
+    await run("document.querySelector('.settings-top').getBoundingClientRect().top"),
+    headerTop,
+  );
+  await run(
+    "document.querySelector('[data-panel=wallpapers]').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))",
+  );
+  assert.equal(
+    await run("document.querySelector('[data-panel=appearance]').getAttribute('aria-selected')"),
+    'true',
+  );
+  await run("document.querySelector('[data-panel=wallpapers]').click()");
+  console.log('PASS: drag-and-drop upload, fixed header and keyboard tabs');
   const videoData = await run(`(async () => {
     const c=document.createElement('canvas');c.width=160;c.height=90;const x=c.getContext('2d');
     const stream=c.captureStream(10);const recorder=new MediaRecorder(stream,{mimeType:'video/webm'});const chunks=[];
@@ -361,6 +388,8 @@ try {
   await run("document.getElementById('customize').click()");
   assert.equal(await run('document.documentElement.scrollWidth <= innerWidth'), true);
   await shot('mobile.png');
+  await run("document.querySelector('[data-panel=wallpapers]').click()");
+  await shot('settings-redesign-mobile.png');
   for (const panel of ['wallpapers', 'appearance', 'widgets', 'links']) {
     await run(`document.querySelector('[data-panel=${panel}]').click()`);
     assert.equal(

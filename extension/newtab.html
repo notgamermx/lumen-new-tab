@@ -8,6 +8,7 @@
     <link rel="icon" href="assets/mark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles/style.css" />
     <link rel="stylesheet" href="styles/customization.css" />
+    <link rel="stylesheet" href="styles/settings.css" />
     <script type="module" src="scripts/newtab.js"></script>
   </head>
   <body>
@@ -90,345 +91,402 @@
       </div>
     </footer>
     <dialog id="settings" aria-labelledby="settings-title">
-      <div class="panel-heading">
-        <h1 id="settings-title">Settings</h1>
-        <button id="close-settings" class="round-button" aria-label="Close settings">×</button>
-      </div>
-      <nav class="panel-nav" aria-label="Customization categories">
-        <button data-panel="wallpapers" aria-current="page">Wallpaper</button
-        ><button data-panel="appearance">Appearance</button
-        ><button data-panel="widgets">Widgets</button><button data-panel="links">Shortcuts</button
-        ><button data-panel="memory">Memory</button>
-      </nav>
-      <div id="panel-wallpapers" class="settings-panel">
-        <p class="hint current-wallpaper">
-          Current wallpaper: <span id="scene-name">Northern lights</span>
-        </p>
-        <section>
-          <h2>Choose a landscape</h2>
-          <div class="presets">
-            <button class="preset aurora" data-scene="aurora" aria-pressed="true">
-              <span>Northern lights</span><small>01 / AURORA</small>
-            </button>
-            <button class="preset dusk" data-scene="dusk" aria-pressed="false">
-              <span>Golden hour</span><small>02 / DUSK</small>
-            </button>
-            <button class="preset ocean" data-scene="ocean" aria-pressed="false">
-              <span>Blue current</span><small>03 / OCEAN</small>
-            </button>
+      <div class="settings-top">
+        <div class="panel-heading">
+          <div class="settings-title">
+            <img src="assets/mark.svg" alt="" />
+            <h1 id="settings-title">Settings</h1>
           </div>
-        </section>
-        <section>
-          <div class="section-title">
-            <h2>Your own wallpaper</h2>
-            <span>STAYS ON THIS DEVICE</span>
-          </div>
-          <label class="upload" for="upload"
-            ><span class="upload-icon">↑</span
-            ><strong id="upload-label">Choose a video or image</strong
-            ><span>MP4, WebM, JPG, PNG, WebP · up to 150 MB</span></label
-          >
-          <input
-            id="upload"
-            class="visually-hidden"
-            type="file"
-            accept="video/mp4,video/webm,image/jpeg,image/png,image/webp"
-          />
-          <div class="saved-media" id="saved-media" hidden>
-            <button id="use-saved">Use saved wallpaper</button
-            ><button id="remove-saved" title="Delete the saved file">Remove</button>
-          </div>
-          <p id="upload-status" class="hint" role="status">
-            Videos loop silently. A small file opens faster.
-          </p>
-        </section>
-        <section>
-          <h2>Wallpaper adjustments</h2>
-          <label class="range-label" for="brightness"
-            >Brightness<output id="brightness-value">75%</output></label
-          ><input type="range" id="brightness" min="20" max="100" value="75" />
-          <label class="range-label" for="blur"
-            >Background blur<output id="blur-value">0 px</output></label
-          ><input type="range" id="blur" min="0" max="16" value="0" />
-          <label class="range-label" for="saturation"
-            >Color intensity<output id="saturation-value">100%</output></label
-          ><input type="range" id="saturation" min="0" max="180" value="100" />
-          <label class="range-label" for="overlay"
-            >Dark overlay<output id="overlay-value">0%</output></label
-          ><input type="range" id="overlay" min="0" max="80" value="0" />
-          <label class="toggle-row"
-            >Play animation<input type="checkbox" id="motion" checked
-          /></label>
-          <label class="select-row" for="speed"
-            >Animation speed<select id="speed">
-              <option value="0.5">0.5× — slow</option>
-              <option value="0.75">0.75×</option>
-              <option value="1">1× — normal</option>
-              <option value="1.25">1.25×</option>
-              <option value="1.5">1.5×</option>
-              <option value="2">2× — fast</option>
-            </select></label
-          >
-        </section>
-        <section>
-          <h2>Uploaded wallpaper framing</h2>
-          <p class="hint">Position matters when Fill crops your video or image.</p>
-          <label class="select-row" for="fit"
-            >Display mode<select id="fit">
-              <option value="cover">Fill screen</option>
-              <option value="contain">Fit entire image / video</option>
-            </select></label
-          >
-          <label class="range-label" for="positionX"
-            >Horizontal position<output id="positionX-value">50%</output></label
-          ><input type="range" id="positionX" min="0" max="100" value="50" />
-          <label class="range-label" for="positionY"
-            >Vertical position<output id="positionY-value">50%</output></label
-          ><input type="range" id="positionY" min="0" max="100" value="50" />
-        </section>
-      </div>
-      <div id="panel-appearance" class="settings-panel" hidden>
-        <section>
-          <h2>Presets</h2>
-          <div class="looks">
-            <button data-look="calm">Default<small>Centered</small></button
-            ><button data-look="editorial">Serif<small>Left aligned</small></button
-            ><button data-look="terminal">Mono<small>Tile shortcuts</small></button>
-          </div>
-          <p class="hint">Applies font, color and layout settings.</p>
-        </section>
-        <section>
-          <h2>Colors &amp; typography</h2>
-          <label class="select-row" for="accent"
-            >Accent color<input id="accent" type="color" value="#c8ddac"
-          /></label>
-          <label class="select-row" for="textColor"
-            >Widget text color<input id="textColor" type="color" value="#f0f3ef"
-          /></label>
-          <label class="select-row" for="font"
-            >Clock typeface<select id="font">
-              <option value="modern">Modern · Segoe UI</option>
-              <option value="serif">Classic · Georgia</option>
-              <option value="mono">Digital · Consolas</option>
-              <option value="rounded">Rounded · Trebuchet</option>
-            </select></label
-          >
-          <label class="range-label" for="clockSize"
-            >Clock size<output id="clockSize-value">142 px</output></label
-          ><input type="range" id="clockSize" min="64" max="180" value="142" />
-          <p class="hint">The clock scales down when needed to fit your window.</p>
-        </section>
-        <section>
-          <h2>Layout</h2>
-          <label class="select-row" for="layout"
-            >Horizontal alignment<select id="layout">
-              <option value="center">Center</option>
-              <option value="left">Left</option>
-              <option value="right">Right</option>
-            </select></label
-          >
-          <label class="select-row" for="vertical"
-            >Vertical alignment<select id="vertical">
-              <option value="top">Top</option>
-              <option value="center">Middle</option>
-              <option value="bottom">Bottom</option>
-            </select></label
-          >
-          <label class="select-row" for="searchStyle"
-            >Search bar shape<select id="searchStyle">
-              <option value="soft">Soft corners</option>
-              <option value="pill">Pill</option>
-              <option value="square">Square</option>
-            </select></label
-          >
-          <label class="range-label" for="glass"
-            >Search &amp; tile opacity<output id="glass-value">6%</output></label
-          ><input type="range" id="glass" min="0" max="70" value="6" />
-        </section>
-      </div>
-      <div id="panel-widgets" class="settings-panel" hidden>
-        <section>
-          <h2>Greeting</h2>
-          <label class="field" for="name"
-            >Your name<input
-              id="name"
-              type="text"
-              maxlength="40"
-              placeholder="Name (optional)"
-              autocomplete="off"
-          /></label>
-          <label class="field" for="greeting-input"
-            >Custom greeting<textarea
-              id="greeting-input"
-              maxlength="160"
-              rows="2"
-              placeholder="Leave empty for a greeting based on the time of day"
-            ></textarea>
-          </label>
-          <p class="hint">Use {name} in your message to include your name.</p>
-        </section>
-        <section>
-          <h2>Clock &amp; date</h2>
-          <label class="toggle-row">24-hour clock<input type="checkbox" id="hour24" /></label>
-          <label class="toggle-row">Show seconds<input type="checkbox" id="seconds" /></label>
-          <label class="select-row" for="timezone"
-            >Time zone<select id="timezone">
-              <option value="local">Device time zone</option>
-              <option value="UTC">UTC</option>
-              <option value="Asia/Kolkata">India</option>
-              <option value="America/New_York">New York</option>
-              <option value="Europe/London">London</option>
-              <option value="Asia/Tokyo">Tokyo</option>
-            </select></label
-          >
-        </section>
-        <section>
-          <h2>Visible widgets</h2>
-          <label class="toggle-row">Clock<input type="checkbox" id="showClock" checked /></label>
-          <label class="toggle-row">Date<input type="checkbox" id="showDate" checked /></label>
-          <label class="toggle-row"
-            >Greeting<input type="checkbox" id="showGreeting" checked
-          /></label>
-          <label class="toggle-row"
-            >Search bar<input type="checkbox" id="showSearch" checked
-          /></label>
-          <label class="toggle-row"
-            >Shortcut links<input type="checkbox" id="showLinks" checked
-          /></label>
-          <label class="toggle-row"
-            >Lumen header<input type="checkbox" id="showBrand" checked
-          /></label>
-          <label class="select-row" for="engine"
-            >Search with<select id="engine">
-              <option value="google">Google</option>
-              <option value="bing">Bing</option>
-              <option value="duckduckgo">DuckDuckGo</option>
-            </select></label
-          >
-        </section>
-      </div>
-      <div id="panel-links" class="settings-panel" hidden>
-        <section>
-          <h2>Shortcuts</h2>
-          <p class="hint">Add up to 12 links. Edit, reorder, or remove them below.</p>
-          <div id="link-list"></div>
-          <form id="link-form">
-            <h2 id="link-form-title">Add a shortcut</h2>
-            <label class="field" for="link-label"
-              >Name<input
-                id="link-label"
-                maxlength="30"
-                required
-                placeholder="e.g. Spotify" /></label
-            ><label class="field" for="link-url"
-              >Website<input
-                id="link-url"
-                maxlength="2048"
-                required
-                placeholder="https://open.spotify.com" /></label
-            ><label class="field" for="link-icon"
-              >Icon or emoji (optional)<input id="link-icon" maxlength="4" placeholder="♫"
-            /></label>
-            <div class="form-actions">
-              <button class="primary-button" type="submit" id="save-link">Add shortcut</button
-              ><button type="button" id="cancel-link" hidden>Cancel edit</button>
-            </div>
-            <p id="link-error" class="hint error" role="status"></p>
-          </form>
-        </section>
-        <section>
-          <h2>Shortcut behavior</h2>
-          <label class="select-row" for="linkStyle"
-            >Display style<select id="linkStyle">
-              <option value="minimal">Minimal links</option>
-              <option value="tiles">Glass tiles</option>
-            </select></label
-          ><label class="toggle-row"
-            >Open links in a new tab<input type="checkbox" id="newTabLinks"
-          /></label>
-        </section>
-      </div>
-      <div id="panel-memory" class="settings-panel" hidden>
-        <section>
-          <h2>Memory saver</h2>
-          <p class="hint">
-            Unload inactive website tabs to reduce their memory use. Tabs stay in the tab bar and
-            reload when reopened.
-          </p>
-          <div class="memory-summary">
-            <strong id="memory-counts">Tab access is off.</strong
-            ><span id="memory-state">Automatic sleeping is off.</span>
-          </div>
-          <div class="form-actions">
-            <button id="memory-connect" class="primary-button">Enable tab access</button
-            ><button id="memory-disconnect" hidden>Remove tab access</button
-            ><button id="memory-refresh" title="Refresh tab counts">Refresh</button>
-          </div>
-          <p class="hint">
-            Tab access is optional. It lets Lumen check website addresses against your protected
-            list. It does not read page contents.
-          </p>
-        </section>
-        <section>
-          <h2>Sleep rules</h2>
-          <label class="toggle-row"
-            >Automatically sleep inactive tabs<input id="memory-enabled" type="checkbox" disabled
-          /></label>
-          <label class="select-row" for="memory-timeout"
-            >Inactive for<select id="memory-timeout" disabled>
-              <option value="5">5 minutes</option>
-              <option value="15">15 minutes</option>
-              <option value="30" selected>30 minutes</option>
-              <option value="60">1 hour</option>
-              <option value="120">2 hours</option>
-            </select></label
-          >
-          <label class="select-row" for="memory-recent"
-            >Keep recent background tabs<select id="memory-recent" disabled>
-              <option value="0">None</option>
-              <option value="2">2 tabs</option>
-              <option value="3" selected>3 tabs</option>
-              <option value="5">5 tabs</option>
-              <option value="10">10 tabs</option>
-            </select></label
-          >
-          <p class="hint">
-            Active, selected, pinned, audio-playing, loading, incognito and already sleeping tabs
-            are skipped. Browser pages and extension pages are skipped too.
-          </p>
-        </section>
-        <section>
-          <h2>Protected websites</h2>
-          <label class="field" for="memory-exclusions"
-            >One domain per line<textarea
-              id="memory-exclusions"
-              rows="5"
-              maxlength="8000"
-              disabled
-              placeholder="docs.google.com&#10;meet.google.com"
-            ></textarea></label
-          ><button id="memory-save-exclusions" class="primary-button" disabled>
-            Save protected websites
+          <button id="close-settings" class="round-button" aria-label="Close settings">×</button>
+        </div>
+        <nav class="panel-nav" aria-label="Customization categories">
+          <button data-panel="wallpapers" aria-current="page">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="3" />
+              <circle cx="8" cy="9" r="1.5" />
+              <path d="m4 17 5-5 4 4 3-3 5 5" /></svg
+            >Wallpaper
           </button>
-          <p class="hint">
-            A domain also protects its subdomains. Pin individual tabs to keep them awake.
-          </p>
-        </section>
-        <section>
-          <h2>Sleep eligible tabs now</h2>
-          <p class="hint">
-            Uses the same timer and protections. Sleeps up to 10 tabs per run. Save unfinished work
-            first; Lumen cannot detect unsaved forms, silent video or every call and screen share.
-          </p>
-          <button id="memory-sleep" class="primary-button" disabled>Sleep eligible tabs</button>
-          <p id="memory-result" class="hint" role="status"></p>
-        </section>
+          <button data-panel="appearance">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-3.5 1.5 1.5 0 0 1 1-2.5h3a3 3 0 0 0 3-3 9 9 0 0 0-9-9Z"
+              />
+              <path
+                d="M7 9h.01M11 6h.01M16 8h.01M6 14h.01"
+                stroke-width="3"
+                stroke-linecap="round"
+              /></svg
+            >Appearance
+          </button>
+          <button data-panel="widgets">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="2" />
+              <rect x="14" y="3" width="7" height="7" rx="2" />
+              <rect x="3" y="14" width="7" height="7" rx="2" />
+              <rect x="14" y="14" width="7" height="7" rx="2" /></svg
+            >Widgets
+          </button>
+          <button data-panel="links">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="m10 14 4-4M9 16l-1 1a4.2 4.2 0 0 1-6-6l4-4a4.2 4.2 0 0 1 6 0M15 8l1-1a4.2 4.2 0 0 1 6 6l-4 4a4.2 4.2 0 0 1-6 0"
+              /></svg
+            >Shortcuts
+          </button>
+          <button data-panel="memory">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="5" width="14" height="14" rx="3" />
+              <rect x="9" y="9" width="6" height="6" rx="1" />
+              <path d="M9 2v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3" /></svg
+            >Memory
+          </button>
+        </nav>
       </div>
-      <div class="reset-row">
-        <button id="reset-style">Reset appearance &amp; widgets</button
-        ><span>Keeps your wallpaper and links</span>
+      <div class="settings-content">
+        <div id="panel-wallpapers" class="settings-panel">
+          <div class="current-wallpaper">
+            <span class="current-icon" aria-hidden="true"
+              ><svg viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="16" rx="3" />
+                <path d="m9 9 6 3-6 3Z" /></svg
+            ></span>
+            <div class="current-details">
+              <small>Current wallpaper</small><strong id="scene-name">Northern lights</strong>
+            </div>
+            <span id="scene-kind" class="current-kind">Built-in</span>
+          </div>
+          <section>
+            <h2>Choose a landscape</h2>
+            <div class="presets">
+              <button class="preset aurora" data-scene="aurora" aria-pressed="true">
+                <canvas class="preset-preview" aria-hidden="true"></canvas
+                ><span>Northern lights</span>
+              </button>
+              <button class="preset dusk" data-scene="dusk" aria-pressed="false">
+                <canvas class="preset-preview" aria-hidden="true"></canvas><span>Golden hour</span>
+              </button>
+              <button class="preset ocean" data-scene="ocean" aria-pressed="false">
+                <canvas class="preset-preview" aria-hidden="true"></canvas><span>Blue current</span>
+              </button>
+            </div>
+          </section>
+          <section>
+            <div class="section-title">
+              <h2>Your own wallpaper</h2>
+              <span>Local file</span>
+            </div>
+            <label class="upload" id="upload-zone" for="upload"
+              ><span class="upload-icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 16V3m-4 4 4-4 4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"
+                  /></svg></span
+              ><strong id="upload-label">Drop a video or image</strong
+              ><span class="upload-browse">Browse files <span aria-hidden="true">↗</span></span>
+              <small>MP4, WebM, JPG, PNG, WebP · up to 150 MB</small></label
+            >
+            <input
+              id="upload"
+              class="visually-hidden"
+              type="file"
+              accept="video/mp4,video/webm,image/jpeg,image/png,image/webp"
+            />
+            <div class="saved-media" id="saved-media" hidden>
+              <button id="use-saved">Use saved wallpaper</button
+              ><button id="remove-saved" title="Delete the saved file">Remove file</button>
+            </div>
+            <p id="upload-status" class="hint" role="status">Videos loop without sound.</p>
+          </section>
+          <section>
+            <h2>Wallpaper adjustments</h2>
+            <label class="range-label" for="brightness"
+              >Brightness<output id="brightness-value">75%</output></label
+            ><input type="range" id="brightness" min="20" max="100" value="75" />
+            <label class="range-label" for="blur"
+              >Background blur<output id="blur-value">0 px</output></label
+            ><input type="range" id="blur" min="0" max="16" value="0" />
+            <label class="range-label" for="saturation"
+              >Color intensity<output id="saturation-value">100%</output></label
+            ><input type="range" id="saturation" min="0" max="180" value="100" />
+            <label class="range-label" for="overlay"
+              >Dark overlay<output id="overlay-value">0%</output></label
+            ><input type="range" id="overlay" min="0" max="80" value="0" />
+            <label class="toggle-row"
+              >Play animation<input type="checkbox" id="motion" checked
+            /></label>
+            <label class="select-row" for="speed"
+              >Animation speed<select id="speed">
+                <option value="0.5">0.5× — slow</option>
+                <option value="0.75">0.75×</option>
+                <option value="1">1× — normal</option>
+                <option value="1.25">1.25×</option>
+                <option value="1.5">1.5×</option>
+                <option value="2">2× — fast</option>
+              </select></label
+            >
+          </section>
+          <section>
+            <h2>Uploaded wallpaper framing</h2>
+            <p class="hint">Position matters when Fill crops your video or image.</p>
+            <label class="select-row" for="fit"
+              >Display mode<select id="fit">
+                <option value="cover">Fill screen</option>
+                <option value="contain">Fit entire image / video</option>
+              </select></label
+            >
+            <label class="range-label" for="positionX"
+              >Horizontal position<output id="positionX-value">50%</output></label
+            ><input type="range" id="positionX" min="0" max="100" value="50" />
+            <label class="range-label" for="positionY"
+              >Vertical position<output id="positionY-value">50%</output></label
+            ><input type="range" id="positionY" min="0" max="100" value="50" />
+          </section>
+        </div>
+        <div id="panel-appearance" class="settings-panel" hidden>
+          <section>
+            <h2>Presets</h2>
+            <div class="looks">
+              <button data-look="calm">Default<small>Centered</small></button
+              ><button data-look="editorial">Serif<small>Left aligned</small></button
+              ><button data-look="terminal">Mono<small>Tile shortcuts</small></button>
+            </div>
+            <p class="hint">Applies font, color and layout settings.</p>
+          </section>
+          <section>
+            <h2>Colors &amp; typography</h2>
+            <label class="select-row" for="accent"
+              >Accent color<input id="accent" type="color" value="#c8ddac"
+            /></label>
+            <label class="select-row" for="textColor"
+              >Widget text color<input id="textColor" type="color" value="#f0f3ef"
+            /></label>
+            <label class="select-row" for="font"
+              >Clock typeface<select id="font">
+                <option value="modern">Modern · Segoe UI</option>
+                <option value="serif">Classic · Georgia</option>
+                <option value="mono">Digital · Consolas</option>
+                <option value="rounded">Rounded · Trebuchet</option>
+              </select></label
+            >
+            <label class="range-label" for="clockSize"
+              >Clock size<output id="clockSize-value">142 px</output></label
+            ><input type="range" id="clockSize" min="64" max="180" value="142" />
+            <p class="hint">The clock scales down when needed to fit your window.</p>
+          </section>
+          <section>
+            <h2>Layout</h2>
+            <label class="select-row" for="layout"
+              >Horizontal alignment<select id="layout">
+                <option value="center">Center</option>
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+              </select></label
+            >
+            <label class="select-row" for="vertical"
+              >Vertical alignment<select id="vertical">
+                <option value="top">Top</option>
+                <option value="center">Middle</option>
+                <option value="bottom">Bottom</option>
+              </select></label
+            >
+            <label class="select-row" for="searchStyle"
+              >Search bar shape<select id="searchStyle">
+                <option value="soft">Soft corners</option>
+                <option value="pill">Pill</option>
+                <option value="square">Square</option>
+              </select></label
+            >
+            <label class="range-label" for="glass"
+              >Search &amp; tile opacity<output id="glass-value">6%</output></label
+            ><input type="range" id="glass" min="0" max="70" value="6" />
+          </section>
+        </div>
+        <div id="panel-widgets" class="settings-panel" hidden>
+          <section>
+            <h2>Greeting</h2>
+            <label class="field" for="name"
+              >Your name<input
+                id="name"
+                type="text"
+                maxlength="40"
+                placeholder="Name (optional)"
+                autocomplete="off"
+            /></label>
+            <label class="field" for="greeting-input"
+              >Custom greeting<textarea
+                id="greeting-input"
+                maxlength="160"
+                rows="2"
+                placeholder="Leave empty for a greeting based on the time of day"
+              ></textarea>
+            </label>
+            <p class="hint">Use {name} in your message to include your name.</p>
+          </section>
+          <section>
+            <h2>Clock &amp; date</h2>
+            <label class="toggle-row">24-hour clock<input type="checkbox" id="hour24" /></label>
+            <label class="toggle-row">Show seconds<input type="checkbox" id="seconds" /></label>
+            <label class="select-row" for="timezone"
+              >Time zone<select id="timezone">
+                <option value="local">Device time zone</option>
+                <option value="UTC">UTC</option>
+                <option value="Asia/Kolkata">India</option>
+                <option value="America/New_York">New York</option>
+                <option value="Europe/London">London</option>
+                <option value="Asia/Tokyo">Tokyo</option>
+              </select></label
+            >
+          </section>
+          <section>
+            <h2>Visible widgets</h2>
+            <label class="toggle-row">Clock<input type="checkbox" id="showClock" checked /></label>
+            <label class="toggle-row">Date<input type="checkbox" id="showDate" checked /></label>
+            <label class="toggle-row"
+              >Greeting<input type="checkbox" id="showGreeting" checked
+            /></label>
+            <label class="toggle-row"
+              >Search bar<input type="checkbox" id="showSearch" checked
+            /></label>
+            <label class="toggle-row"
+              >Shortcut links<input type="checkbox" id="showLinks" checked
+            /></label>
+            <label class="toggle-row"
+              >Lumen header<input type="checkbox" id="showBrand" checked
+            /></label>
+            <label class="select-row" for="engine"
+              >Search with<select id="engine">
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+              </select></label
+            >
+          </section>
+        </div>
+        <div id="panel-links" class="settings-panel" hidden>
+          <section>
+            <h2>Shortcuts</h2>
+            <p class="hint">Add up to 12 links. Edit, reorder, or remove them below.</p>
+            <div id="link-list"></div>
+            <form id="link-form">
+              <h2 id="link-form-title">Add a shortcut</h2>
+              <label class="field" for="link-label"
+                >Name<input
+                  id="link-label"
+                  maxlength="30"
+                  required
+                  placeholder="e.g. Spotify" /></label
+              ><label class="field" for="link-url"
+                >Website<input
+                  id="link-url"
+                  maxlength="2048"
+                  required
+                  placeholder="https://open.spotify.com" /></label
+              ><label class="field" for="link-icon"
+                >Icon or emoji (optional)<input id="link-icon" maxlength="4" placeholder="♫"
+              /></label>
+              <div class="form-actions">
+                <button class="primary-button" type="submit" id="save-link">Add shortcut</button
+                ><button type="button" id="cancel-link" hidden>Cancel edit</button>
+              </div>
+              <p id="link-error" class="hint error" role="status"></p>
+            </form>
+          </section>
+          <section>
+            <h2>Shortcut behavior</h2>
+            <label class="select-row" for="linkStyle"
+              >Display style<select id="linkStyle">
+                <option value="minimal">Minimal links</option>
+                <option value="tiles">Glass tiles</option>
+              </select></label
+            ><label class="toggle-row"
+              >Open links in a new tab<input type="checkbox" id="newTabLinks"
+            /></label>
+          </section>
+        </div>
+        <div id="panel-memory" class="settings-panel" hidden>
+          <section>
+            <h2>Memory saver</h2>
+            <p class="hint">
+              Unload inactive website tabs to reduce their memory use. Tabs stay in the tab bar and
+              reload when reopened.
+            </p>
+            <div class="memory-summary">
+              <strong id="memory-counts">Tab access is off.</strong
+              ><span id="memory-state">Automatic sleeping is off.</span>
+            </div>
+            <div class="form-actions">
+              <button id="memory-connect" class="primary-button">Enable tab access</button
+              ><button id="memory-disconnect" hidden>Remove tab access</button
+              ><button id="memory-refresh" title="Refresh tab counts">Refresh</button>
+            </div>
+            <p class="hint">
+              Tab access is optional. It lets Lumen check website addresses against your protected
+              list. It does not read page contents.
+            </p>
+          </section>
+          <section>
+            <h2>Sleep rules</h2>
+            <label class="toggle-row"
+              >Automatically sleep inactive tabs<input id="memory-enabled" type="checkbox" disabled
+            /></label>
+            <label class="select-row" for="memory-timeout"
+              >Inactive for<select id="memory-timeout" disabled>
+                <option value="5">5 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30" selected>30 minutes</option>
+                <option value="60">1 hour</option>
+                <option value="120">2 hours</option>
+              </select></label
+            >
+            <label class="select-row" for="memory-recent"
+              >Keep recent background tabs<select id="memory-recent" disabled>
+                <option value="0">None</option>
+                <option value="2">2 tabs</option>
+                <option value="3" selected>3 tabs</option>
+                <option value="5">5 tabs</option>
+                <option value="10">10 tabs</option>
+              </select></label
+            >
+            <p class="hint">
+              Active, selected, pinned, audio-playing, loading, incognito and already sleeping tabs
+              are skipped. Browser pages and extension pages are skipped too.
+            </p>
+          </section>
+          <section>
+            <h2>Protected websites</h2>
+            <label class="field" for="memory-exclusions"
+              >One domain per line<textarea
+                id="memory-exclusions"
+                rows="5"
+                maxlength="8000"
+                disabled
+                placeholder="docs.google.com&#10;meet.google.com"
+              ></textarea></label
+            ><button id="memory-save-exclusions" class="primary-button" disabled>
+              Save protected websites
+            </button>
+            <p class="hint">
+              A domain also protects its subdomains. Pin individual tabs to keep them awake.
+            </p>
+          </section>
+          <section>
+            <h2>Sleep eligible tabs now</h2>
+            <p class="hint">
+              Uses the same timer and protections. Sleeps up to 10 tabs per run. Save unfinished
+              work first; Lumen cannot detect unsaved forms, silent video or every call and screen
+              share.
+            </p>
+            <button id="memory-sleep" class="primary-button" disabled>Sleep eligible tabs</button>
+            <p id="memory-result" class="hint" role="status"></p>
+          </section>
+        </div>
+        <div class="reset-row">
+          <button id="reset-style">Reset appearance &amp; widgets</button
+          ><span>Keeps your wallpaper and links</span>
+        </div>
+        <p class="panel-footnote"><span aria-hidden="true">✓</span> Changes save automatically</p>
       </div>
-      <p class="panel-footnote">Settings save automatically.<br />Use ⛶ to hide widgets.</p>
     </dialog>
     <p id="toast" role="status" hidden></p>
   </body>

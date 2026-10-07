@@ -25,6 +25,10 @@ const controlKeys = [
 ];
 const control = (key) => $(key === 'greeting' ? 'greeting-input' : key);
 const landscape = new Landscape($('landscape'));
+for (const button of document.querySelectorAll('[data-scene]')) {
+  const preview = new Landscape(button.querySelector('canvas'), { preview: true });
+  preview.setScene(button.dataset.scene);
+}
 function readSettings() {
   let value = {};
   try {
@@ -134,6 +138,11 @@ function apply() {
     if ($(key + '-value'))
       $(key + '-value').textContent =
         `${settings[key]}${['blur', 'clockSize'].includes(key) ? ' px' : '%'}`;
+    if (el.type === 'range')
+      el.style.setProperty(
+        '--range-fill',
+        `${((Number(el.value) - Number(el.min)) / (Number(el.max) - Number(el.min))) * 100}%`,
+      );
   }
   $('video').playbackRate = Number(settings.speed);
   landscape.speed = Number(settings.speed);
@@ -148,6 +157,12 @@ function apply() {
   $('scene-name').textContent = custom
     ? savedMedia.name
     : sceneNames[settings.scene] || sceneNames.aurora;
+  $('scene-name').title = $('scene-name').textContent;
+  $('scene-kind').textContent = custom
+    ? savedMedia.kind === 'video'
+      ? 'Video'
+      : 'Image'
+    : 'Built-in';
   $('saved-media').hidden = !savedMedia;
   $('use-saved').textContent = savedMedia
     ? `Use ${savedMedia.kind === 'video' ? 'saved video' : 'saved image'}`
@@ -207,10 +222,11 @@ function setUploadBusy(busy) {
     ...document.querySelectorAll('[data-scene]'),
   ])
     el.disabled = busy;
-  $('upload-label').textContent = busy ? 'Preparing your wallpaper…' : 'Choose a video or image';
+  $('upload-label').textContent = busy ? 'Preparing your wallpaper…' : 'Drop a video or image';
+  $('upload-zone').classList.toggle('upload-busy', busy);
+  $('upload-zone').setAttribute('aria-busy', String(busy));
 }
-$('upload').addEventListener('change', async (event) => {
-  const file = event.target.files[0];
+async function importWallpaper(file) {
   if (!file || uploadBusy) return;
   $('upload-status').classList.remove('error');
   setUploadBusy(true);
@@ -243,8 +259,23 @@ $('upload').addEventListener('change', async (event) => {
     $('upload-status').classList.add('error');
   } finally {
     setUploadBusy(false);
-    event.target.value = '';
+    $('upload').value = '';
   }
+}
+$('upload').addEventListener('change', (event) => importWallpaper(event.target.files[0]));
+for (const name of ['dragenter', 'dragover'])
+  $('upload-zone').addEventListener(name, (event) => {
+    event.preventDefault();
+    if (!uploadBusy) $('upload-zone').classList.add('dragging');
+  });
+$('upload-zone').addEventListener('dragleave', (event) => {
+  if (!$('upload-zone').contains(event.relatedTarget))
+    $('upload-zone').classList.remove('dragging');
+});
+$('upload-zone').addEventListener('drop', (event) => {
+  event.preventDefault();
+  $('upload-zone').classList.remove('dragging');
+  importWallpaper(event.dataTransfer.files[0]);
 });
 for (const button of document.querySelectorAll('[data-scene]'))
   button.addEventListener('click', () => {
@@ -387,16 +418,48 @@ $('link-form').addEventListener('submit', (event) => {
   apply();
 });
 $('cancel-link').addEventListener('click', clearLinkEditor);
-for (const button of document.querySelectorAll('[data-panel]'))
+for (const button of document.querySelectorAll('[data-panel]')) {
+  const nav = button.parentElement;
+  nav.setAttribute('role', 'tablist');
+  button.id = `tab-${button.dataset.panel}`;
+  button.setAttribute('role', 'tab');
+  button.setAttribute('aria-controls', `panel-${button.dataset.panel}`);
+  button.setAttribute('aria-selected', String(button.hasAttribute('aria-current')));
+  button.tabIndex = button.hasAttribute('aria-current') ? 0 : -1;
+  const panel = $(`panel-${button.dataset.panel}`);
+  panel.setAttribute('role', 'tabpanel');
+  panel.setAttribute('aria-labelledby', button.id);
+  button.addEventListener('keydown', (event) => {
+    const tabs = [...nav.querySelectorAll('[data-panel]')];
+    const index = tabs.indexOf(button);
+    const next =
+      event.key === 'ArrowRight'
+        ? (index + 1) % tabs.length
+        : event.key === 'ArrowLeft'
+          ? (index - 1 + tabs.length) % tabs.length
+          : event.key === 'Home'
+            ? 0
+            : event.key === 'End'
+              ? tabs.length - 1
+              : -1;
+    if (next < 0) return;
+    event.preventDefault();
+    tabs[next].click();
+    tabs[next].focus();
+  });
   button.addEventListener('click', () => {
     for (const panel of document.querySelectorAll('.settings-panel'))
       panel.hidden = panel.id !== `panel-${button.dataset.panel}`;
-    for (const item of document.querySelectorAll('[data-panel]'))
+    for (const item of document.querySelectorAll('[data-panel]')) {
       item === button
         ? item.setAttribute('aria-current', 'page')
         : item.removeAttribute('aria-current');
-    $('settings').scrollTop = 0;
+      item.setAttribute('aria-selected', String(item === button));
+      item.tabIndex = item === button ? 0 : -1;
+    }
+    document.querySelector('.settings-content').scrollTop = 0;
   });
+}
 const looks = {
   calm: {
     font: 'modern',

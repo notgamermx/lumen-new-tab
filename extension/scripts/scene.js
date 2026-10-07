@@ -1,6 +1,6 @@
 // Procedural landscapes: entirely local, with no downloaded assets.
 export class Landscape {
-  constructor(canvas) {
+  constructor(canvas, { preview = false } = {}) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.scene = 'aurora';
@@ -18,11 +18,11 @@ export class Landscape {
     ]);
     this.resize = () => {
       const scale = Math.min(1.25, 1800 / innerWidth);
-      canvas.width = Math.round(innerWidth * scale);
-      canvas.height = Math.round(innerHeight * scale);
+      canvas.width = preview ? 360 : Math.round(innerWidth * scale);
+      canvas.height = preview ? 230 : Math.round(innerHeight * scale);
       this.draw();
     };
-    addEventListener('resize', this.resize);
+    if (!preview) addEventListener('resize', this.resize);
     this.resize();
   }
   setScene(scene) {
