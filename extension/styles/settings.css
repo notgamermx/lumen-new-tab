@@ -105,6 +105,22 @@
   background: #52636b66;
   border-radius: 10px;
 }
+.free-wallpapers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 12px;
+  margin-bottom: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: var(--accent);
+  font-size: 12px;
+}
+.free-wallpapers:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
 #settings .current-wallpaper {
   display: flex;
   align-items: center;
