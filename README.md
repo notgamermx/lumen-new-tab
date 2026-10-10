@@ -27,7 +27,7 @@ No build step is needed to install the extension. Keep its folder in place after
 
 Videos loop without audio. Files can be up to 150 MB, subject to available browser storage. Short videos load faster.
 
-Get [free wallpapers](https://github.com/notgamermx/wallpaper): 25 original full-HD images across nature, space, abstract, anime-style scenery, and gaming-style designs, plus 5 live WebM wallpapers. Download a file, then open **Customize → Wallpaper** and choose it or drag it into the upload area.
+Get [free wallpapers](https://github.com/notgamermx/wallpaper#live-wallpapers): 25 live full-HD WebM wallpapers across nature, space, abstract, anime-style scenery, and gaming-style designs, plus matching still images. Download a file, then open **Customize → Wallpaper** and choose it or drag it into the upload area.
 
 Wallpaper files and settings stay in the browser profile. Lumen has no analytics, accounts or remote wallpaper requests. Search and shortcut links open the websites you choose. See [privacy details](docs/privacy.md).
 
