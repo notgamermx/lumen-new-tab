@@ -169,6 +169,23 @@ try {
     "document.getElementById('customize').click();document.querySelector('[data-panel=memory]').click()",
   );
   await until("document.getElementById('memory-counts').textContent.includes('tabs')");
+  await evaluate(`(() => {
+    window.originalRemovePermission = chrome.permissions.remove;
+    chrome.permissions.remove = async () => false;
+    document.getElementById('memory-disconnect').click();
+  })()`);
+  await until(
+    "document.getElementById('memory-result').classList.contains('error') && !document.getElementById('memory-enabled').disabled",
+  );
+  assert.equal(
+    await evaluate("document.getElementById('memory-result').textContent"),
+    'Tab access could not be removed. Automatic sleeping is off.',
+  );
+  assert.equal(await evaluate("document.getElementById('memory-disconnect').hidden"), false);
+  await evaluate(
+    'chrome.permissions.remove = window.originalRemovePermission; delete window.originalRemovePermission',
+  );
+  console.log('PASS: failed permission removal shows an error and restores usable controls');
   await send('Emulation.setDeviceMetricsOverride', {
     width: 1440,
     height: 900,

@@ -61,6 +61,20 @@ const sender = { id: 'test', url: 'chrome-extension://test/newtab.html' };
 const request = (type, config) =>
   new Promise((resolve) => listeners.message({ type, config }, sender, resolve));
 
+test('non-Error API rejections still return a response and leave the queue usable', async () => {
+  const contains = chrome.permissions.contains;
+  chrome.permissions.contains = () => Promise.reject(undefined);
+  try {
+    assert.deepEqual(await request('memory:sleep'), {
+      ok: false,
+      error: 'The memory action could not be completed.',
+    });
+  } finally {
+    chrome.permissions.contains = contains;
+  }
+  assert.equal((await request('memory:status')).ok, true);
+});
+
 test('rejects messages from outside the extension and requires access to enable sleeping', async () => {
   assert.equal(
     listeners.message(

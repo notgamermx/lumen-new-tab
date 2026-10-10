@@ -51,7 +51,7 @@ export function isProtectedHost(host, exclusions) {
   return exclusions.some((entry) => host === entry || host.endsWith(`.${entry}`));
 }
 
-export function isEligible(tab, config, now = Date.now()) {
+function isOrdinaryTab(tab, config) {
   if (
     !Number.isInteger(tab.id) ||
     tab.id < 0 ||
@@ -68,12 +68,7 @@ export function isEligible(tab, config, now = Date.now()) {
     (Number.isInteger(tab.splitViewId) && tab.splitViewId >= 0)
   )
     return false;
-  if (
-    !Number.isFinite(tab.lastAccessed) ||
-    tab.lastAccessed <= 0 ||
-    now - tab.lastAccessed < config.timeoutMinutes * 60000
-  )
-    return false;
+  if (!Number.isFinite(tab.lastAccessed) || tab.lastAccessed <= 0) return false;
   try {
     const url = new URL(tab.url);
     return (
@@ -85,11 +80,15 @@ export function isEligible(tab, config, now = Date.now()) {
   }
 }
 
+export function isEligible(tab, config, now = Date.now()) {
+  return isOrdinaryTab(tab, config) && now - tab.lastAccessed >= config.timeoutMinutes * 60000;
+}
+
 export function selectCandidates(tabs, config, now = Date.now()) {
   // Keep the most recently used ordinary tabs, even if they exceed the inactivity timer.
   const recent = new Set(
     tabs
-      .filter((tab) => !tab.active && !tab.discarded && Number.isFinite(tab.lastAccessed))
+      .filter((tab) => isOrdinaryTab(tab, config))
       .sort((a, b) => b.lastAccessed - a.lastAccessed)
       .slice(0, config.keepRecent)
       .map((tab) => tab.id),

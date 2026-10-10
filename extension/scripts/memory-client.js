@@ -85,8 +85,13 @@ $('memory-connect').addEventListener('click', () => {
 $('memory-disconnect').addEventListener('click', () =>
   action(async () => {
     await request('memory:save', { ...configFromControls(), enabled: false });
-    await chrome.permissions.remove({ permissions: ['tabs'] });
-    message('Tab access removed. Automatic sleeping is off.');
+    const removed = await chrome.permissions.remove({ permissions: ['tabs'] });
+    message(
+      removed
+        ? 'Tab access removed. Automatic sleeping is off.'
+        : 'Tab access could not be removed. Automatic sleeping is off.',
+      !removed,
+    );
   }),
 );
 for (const id of ['memory-enabled', 'memory-timeout', 'memory-recent'])

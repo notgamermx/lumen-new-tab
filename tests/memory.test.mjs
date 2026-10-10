@@ -80,3 +80,34 @@ test('keeps recent background tabs and sleeps oldest eligible tabs first', () =>
     [3, 2, 1],
   );
 });
+
+test('protected tabs do not consume recent-tab slots', () => {
+  const ordinary = [tab, { ...tab, id: 2, lastAccessed: now - 7200000 }];
+  for (const patch of [
+    { pinned: true },
+    { audible: true },
+    { highlighted: true },
+    { url: 'chrome://settings/' },
+    { url: 'chrome-extension://test/newtab.html' },
+    { url: 'https://docs.google.com/document/' },
+    { autoDiscardable: false },
+  ]) {
+    const protectedTab = { ...tab, id: 3, lastAccessed: now - 60000, ...patch };
+    assert.deepEqual(
+      selectCandidates([...ordinary, protectedTab], { ...config, keepRecent: 2 }, now),
+      [],
+    );
+  }
+});
+
+test('recent ordinary tabs count before their inactivity timer expires', () => {
+  const tabs = [
+    tab,
+    { ...tab, id: 2, lastAccessed: now - 7200000 },
+    { ...tab, id: 3, lastAccessed: now - 60000 },
+  ];
+  assert.deepEqual(
+    selectCandidates(tabs, { ...config, keepRecent: 2 }, now).map((t) => t.id),
+    [2],
+  );
+});

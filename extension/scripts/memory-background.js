@@ -89,7 +89,7 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
   }).then(
     (value) => respond({ ok: true, value }),
     (error) =>
-      respond({ ok: false, error: error.message || 'The memory action could not be completed.' }),
+      respond({ ok: false, error: error?.message || 'The memory action could not be completed.' }),
   );
   return true;
 });
