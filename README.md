@@ -1,57 +1,61 @@
 # Lumen
 
-A new-tab extension for Chrome and Edge. Use a local video as your wallpaper, or pick one of three animated backgrounds.
+A simple, customizable new-tab extension for Chrome and Edge. Set a local video as your wallpaper, or use one of the built-in animated backgrounds. 
 
 ![Lumen new-tab page with an animated aurora background, clock, search and shortcuts](docs/images/new-tab.png)
 
-## Install
+## Installation
 
-1. Download or clone this repository.
-2. Open `chrome://extensions` or `edge://extensions` and enable **Developer mode**.
+You don't need a build step to use this. 
+
+1. Download or clone this repo.
+2. Go to `chrome://extensions` (or `edge://extensions`) and turn on **Developer mode** in the top right.
 3. Click **Load unpacked** and select the `extension` folder.
-4. Open a new tab. Use **Customize** to choose a wallpaper and change your settings.
+4. Open a new tab and hit **Customize** to set things up.
 
-No build step is needed to install the extension. Keep its folder in place after loading it.
+*Note: Don't delete or move the folder after loading it, or the browser will lose track of the extension.*
 
 ## Features
 
-- MP4 and WebM wallpapers, plus JPG, PNG and WebP images.
-- Brightness, blur, saturation, playback speed and crop positioning.
-- Clock fonts, sizes, colors, alignment, seconds and time zones.
-- Custom greetings and up to 12 editable shortcuts.
-- Separate visibility controls for the clock, date, search, greeting and shortcuts.
-- Wallpaper-only mode and automatic playback pause in background tabs.
-- Optional memory saver to unload inactive website tabs across the browser.
+- **Media support:** Works with MP4 and WebM videos, plus JPG, PNG, and WebP images. Max file size is 150MB, but shorter/smaller videos will load much faster. 
+- **Tweaks:** Adjust brightness, blur, saturation, playback speed, and crop position right from the dashboard.
+- **Widgets:** Customizable clock (fonts, colors, alignment, time zones) and up to 12 editable shortcuts. 
+- **Declutter:** Toggle visibility for the clock, date, search bar, greeting, and shortcuts independently.
+- **Performance:** Videos loop silently and automatically pause when you switch to another tab to save resources. 
 
 ![Customization panel with presets, colors, clock fonts and layout controls](docs/images/customization.png)
 
-Videos loop without audio. Files can be up to 150 MB, subject to available browser storage. Short videos load faster.
+**Looking for wallpapers?** 
+You can grab some free live wallpapers [here](https://github.com/notgamermx/wallpaper#live-wallpapers). Just download one, go to **Customize → Wallpaper** in Lumen, and drop it in.
 
-Get [free wallpapers](https://github.com/notgamermx/wallpaper#live-wallpapers): 25 live full-HD WebM wallpapers across nature, space, abstract, anime-style scenery, and gaming-style designs, plus matching still images. Download a file, then open **Customize → Wallpaper** and choose it or drag it into the upload area.
+**Privacy:** 
+Everything stays strictly local to your browser profile. Lumen has zero analytics, no user accounts, and makes no remote requests for wallpapers. Check the [privacy docs](docs/privacy.md) if you want the specifics.
 
-Wallpaper files and settings stay in the browser profile. Lumen has no analytics, accounts or remote wallpaper requests. Search and shortcut links open the websites you choose. See [privacy details](docs/privacy.md).
+## Memory Saver
 
-## Memory saver
+Lumen includes an optional memory saver to unload tabs you aren't actively using. 
 
-Open **Customize → Memory → Enable tab access**. The browser asks for the optional tab permission so Lumen can check website addresses against the protected list. Then turn on **Automatically sleep inactive tabs**, or use **Sleep eligible tabs** for a manual run. Automatic sleeping is off by default.
+To turn it on, go to **Customize → Memory → Enable tab access**. The browser will ask for permission so Lumen can read your open tabs. From there, you can enable **Automatically sleep inactive tabs**, or just click **Sleep eligible tabs** when you want to run it manually. 
 
-Choose a 5–120 minute inactivity timer, keep up to 10 recent background tabs awake, and exclude website domains. Active, selected, pinned, audio-playing, loading, private, already discarded, and explicitly non-discardable tabs are skipped. Browser and extension pages are also skipped. A domain exclusion includes its subdomains. Automatic checks run about once a minute and unload at most 10 tabs per run.
+**How it works:**
+- Set a timer between 5 and 120 minutes of inactivity.
+- You can protect up to 10 recent background tabs from being put to sleep, or whitelist specific website domains completely.
+- Lumen automatically skips tabs that are active, pinned, playing audio, loading, or private. 
+- It runs about once a minute and unloads a maximum of 10 tabs per run to keep things smooth. 
 
-Tabs stay in the tab bar and reload when reopened. Save unfinished work, and protect sites used for editing, meetings, or silent video: Lumen cannot inspect page contents or reliably detect unsaved forms and every screen share or call. Some editing and meeting domains are protected by default. Removing tab access disables automatic sleeping.
-
-This can reduce memory held by inactive pages; it does not control Chrome's total memory usage, free operating-system memory, or measure megabytes saved. The panel shows actual sleeping and eligible tab counts. Chrome also has a built-in Memory Saver under Settings → Performance, with additional browser-level safeguards. See [Chrome performance settings](https://support.google.com/chrome/answer/12929150) and [tab discarding](https://developer.chrome.com/docs/extensions/reference/api/tabs#method-discard).
+When you click back into a sleeping tab, it just reloads. *Just a heads up:* Lumen can't see the actual content of your pages, so it won't always know if you have unsaved form data. Save your work!
 
 ![Memory saver panel with inactivity rules, protected websites and live tab counts](docs/images/memory-saver.png)
 
 ## Updating
 
-Replace the files in the same installed folder, click **Reload** on the Extensions page, and open a new tab. Removing the extension clears its saved data.
+To update, just replace the files in your existing `extension` folder, go back to your browser's Extensions page, and click the **Reload** icon on the Lumen card. 
 
-If you previously loaded the older `Wallpaper/lumen` folder, keep that installation for now. Loading this project's `extension` folder separately can give it a different extension ID and separate storage. To keep the old installation's wallpaper and settings, copy the contents of `extension` into the old installed folder and reload it.
+If you are migrating from an older installation (like the old `Wallpaper/lumen` folder), don't just load this new folder separately—Chrome will treat it as a brand new extension and you'll lose your settings. Instead, copy the contents of the new `extension` folder into your old folder and hit reload.
 
 ## Development
 
-Node.js 22 or newer is needed for development commands. The extension itself uses plain JavaScript and has no runtime dependencies.
+The extension itself is written in vanilla JavaScript with zero runtime dependencies. If you want to run the dev commands, you'll need Node.js 22+.
 
 ```sh
 npm ci
@@ -60,21 +64,26 @@ npm run check
 npm run package
 ```
 
-The ZIP is written to `dist/`. `npm run format` formats source files. GitHub Actions runs formatting, syntax and preference checks and builds the ZIP on pushes and pull requests.
+Packaging outputs a ZIP to the `dist/` folder. `npm run format` cleans up the code.
 
-Run the page checks with `npm run test:browser` and the tab-sleeping checks with `npm run test:memory-browser`. They use isolated headless Edge profiles on Windows. Set `BROWSER_PATH` to another compatible Chromium browser executable if needed. The memory test gives tab access to a temporary copy of the extension and ages fixture timestamps to test unloading without waiting for the inactivity timer. Production tab access stays optional. Browser checks are local; they are not included in CI. Generated screenshots, media fixtures and profiles go in the ignored `test-results` directory.
+**Testing:**
+Run page tests with `npm run test:browser` and memory-saver tests with `npm run test:memory-browser`. These run in isolated, headless Edge profiles on Windows (you can set `BROWSER_PATH` to another Chromium browser if you prefer). The memory test uses a temporary copy of the extension and speeds up the clock to test tab unloading without actually waiting 5 minutes. Test outputs (screenshots, etc.) go to the `test-results` folder.
 
 ```text
-extension/          Load this folder in the browser
-  assets/           Icons
-  scripts/          Page logic, preferences, storage and animation
-  styles/           Page and settings styles
-tests/              Preference and browser checks
-scripts/            Source validation and ZIP packaging
-docs/               Privacy information
-.github/workflows/  CI configuration
+extension/          # The actual extension folder to load
+  assets/           # Icons
+  scripts/          # Core logic, UI, and storage
+  styles/           # CSS
+tests/              # Test suites
+scripts/            # Build and validation scripts
+docs/               # Extra documentation
+.github/workflows/  # CI pipelines
 ```
 
 ## Limitations
 
-Chrome/Edge 121 or newer is required. Chrome does not allow the new-tab override in incognito windows. Another new-tab extension may take priority. Video support depends on the browser's codecs; an unsupported file is rejected before it replaces the saved wallpaper. Firefox is not tested.
+- Requires Chrome or Edge v121 or higher.
+- Chrome natively blocks new-tab overrides in Incognito mode.
+- If you have another new-tab extension installed, they might fight for priority. 
+- Video playback relies on your browser's built-in codecs. 
+- Firefox is entirely untested.
