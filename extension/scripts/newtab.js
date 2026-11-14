@@ -330,7 +330,29 @@ function renderLinks() {
       anchor.rel = 'noopener noreferrer';
     }
     const icon = document.createElement('span');
-    icon.textContent = link.icon || link.label[0].toUpperCase();
+    icon.className = 'link-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    const fallbackIcon = link.icon || link.label[0].toUpperCase();
+    icon.textContent = fallbackIcon;
+    try {
+      const hostname = new URL(link.url).hostname;
+      const favicon = document.createElement('img');
+      favicon.alt = '';
+      favicon.width = 32;
+      favicon.height = 32;
+      favicon.loading = 'lazy';
+      favicon.decoding = 'async';
+      favicon.referrerPolicy = 'no-referrer';
+      favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(hostname)}&sz=64`;
+      favicon.addEventListener('error', () => {
+        favicon.remove();
+        icon.textContent = fallbackIcon;
+      }, { once: true });
+      icon.textContent = '';
+      icon.append(favicon);
+    } catch {
+      icon.textContent = fallbackIcon;
+    }
     const label = document.createElement('span');
     label.className = 'link-name';
     label.textContent = link.label;

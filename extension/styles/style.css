@@ -608,3 +608,124 @@ select {
     transition: none !important;
   }
 }
+
+/* Lumen shortcut refresh: tactile glass tiles with clear icon hierarchy. */
+#shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+  max-width: min(760px, calc(100vw - 40px));
+  margin-left: auto;
+  margin-right: auto;
+}
+#shortcuts a {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 92px;
+  min-height: 94px;
+  padding: 12px 9px 10px;
+  border: 1px solid #ffffff24;
+  border-radius: 22px;
+  color: #f3f5ef;
+  background: radial-gradient(circle at 24% 8%, #ffffff25, transparent 56%), linear-gradient(145deg, #ffffff1b, #ffffff08);
+  box-shadow: inset 0 1px 0 #ffffff20, 0 10px 28px #00000020;
+  backdrop-filter: blur(20px) saturate(135%);
+  -webkit-backdrop-filter: blur(20px) saturate(135%);
+  transition: transform 220ms cubic-bezier(.2,.8,.2,1), border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+#shortcuts a:nth-child(4n + 1) { background: radial-gradient(circle at 24% 8%, #ffffff2b, transparent 56%), linear-gradient(145deg, #7da8e13b, #ffffff08); }
+#shortcuts a:nth-child(4n + 2) { background: radial-gradient(circle at 24% 8%, #ffffff2b, transparent 56%), linear-gradient(145deg, #d78b9b3b, #ffffff08); }
+#shortcuts a:nth-child(4n + 3) { background: radial-gradient(circle at 24% 8%, #ffffff2b, transparent 56%), linear-gradient(145deg, #a7b7a23b, #ffffff08); }
+#shortcuts a:nth-child(4n + 4) { background: radial-gradient(circle at 24% 8%, #ffffff2b, transparent 56%), linear-gradient(145deg, #b09ae13b, #ffffff08); }
+#shortcuts a::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(155deg, #ffffff0b, transparent 58%);
+  pointer-events: none;
+}
+#shortcuts a > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border: 1px solid #ffffff20;
+  border-radius: 15px;
+  color: #fff;
+  background: #07131b55;
+  box-shadow: inset 0 1px 0 #ffffff20, 0 5px 14px #00000020;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  text-shadow: 0 2px 8px #0006;
+}
+#shortcuts a .link-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #f1f3ee;
+  font-size: 10px;
+  font-weight: 550;
+  letter-spacing: .025em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#shortcuts a:hover {
+  color: #fff;
+  transform: translateY(-6px) scale(1.035);
+  border-color: #ffffff62;
+  box-shadow: inset 0 1px 0 #ffffff35, 0 16px 34px #00000038, 0 0 24px #c8ddac18;
+}
+#shortcuts a:active { transform: translateY(-2px) scale(.98); }
+#shortcuts a:focus-visible { outline: 2px solid #d8e9c6; outline-offset: 4px; }
+.round-button,
+.customize {
+  border-color: #ffffff2c;
+  background: linear-gradient(145deg, #ffffff1c, #ffffff09);
+  box-shadow: inset 0 1px 0 #ffffff1c, 0 8px 22px #00000018;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.round-button:hover,
+.customize:hover {
+  transform: translateY(-2px);
+  border-color: #ffffff55;
+  background: #ffffff20;
+  box-shadow: 0 10px 24px #00000025;
+}
+.round-button:active,
+.customize:active { transform: translateY(0) scale(.97); }
+@media (max-width: 650px) {
+  #shortcuts { gap: 8px; margin-top: 22px; max-width: calc(100vw - 28px); }
+  #shortcuts a { width: 76px; min-height: 80px; gap: 7px; padding: 9px 7px 8px; border-radius: 18px; }
+  #shortcuts a > span:first-child { width: 36px; height: 36px; border-radius: 12px; font-size: 17px; }
+  #shortcuts a .link-name { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #shortcuts a, .round-button, .customize { transition: none; }
+  #shortcuts a:hover, .round-button:hover, .customize:hover { transform: none; }
+}
+
+
+/* Shortcut favicon artwork */
+#shortcuts a > .link-icon {
+  overflow: hidden;
+  padding: 5px;
+}
+#shortcuts a > .link-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 7px;
+}
